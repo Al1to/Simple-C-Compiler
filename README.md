@@ -44,3 +44,39 @@ int main() {
 
 ## Парсер
 // TODO:
+Грамматика для парсера:
+```bnf
+Program ::= [ FuncDecl ]
+
+FuncDecl  ::= Type ID ArgsDecl Block
+ArgsDecl  ::= "(" _ ")" | "(" ArgDecl ")" | "(" [ ArgDecl "," ] ArgDecl ")"
+Args      ::= "(" _ ")" | "(" Arg ")" | "(" [ Arg "," ] Arg ")"
+ArgDecl   ::= Type ID
+Arg       ::= Expr
+
+VarDecl ::= Type ID ";" | ...TODO...
+
+If     ::= "if" "(" Expr ")" Block [ ElseIf ] { Else }
+ElseIf ::= "else" If
+Else   ::= "else" Block
+
+For ::= "for" "(" Stmt Stmt Expr ")" Block
+
+While ::= "while" "(" Expr ")" Block
+
+Block ::= "{" [ Stmt ] "}" | Stmt
+
+Stmt  ::= Expr ";" | VarDecl | Var | If | For | While | "break" ";" | "continue" ";" | "return" Expr ";" | ";"
+Expr  ::= Terma | Terma "=" Expr | Terma "+=" Expr | Terma "-=" Expr | Terma "*=" Expr | Terma "/=" Expr | Terma "%=" Expr
+Terma ::= Termb | Termb "||" Terma
+Termb ::= Termc | Termc "&&" Termb
+Termc ::= Termd | Termd "==" Termc | Termd "!=" Termc
+Termd ::= Terme | Terme ">" Termd | Terme "<" Termd | Terme ">=" Termd  | Terme "<=" Termd
+Terme ::= Termf | Termf "+" Terme | Termf "-" Terme
+Termf ::= Termg | Termg "*" Termf | Termg "/" Termf | Termg "%" Termf
+Termg ::= "&" Termh | "*" Termh | "!" Termh | "++" Termh | "--" Termh | "+" Termh | "-" Termh | Termh
+Termh ::= Fact "++" | Fact "--" | Fact Args | Fact "[" Expr "]" | Type "(" Expr ")"
+Fact  ::= NUM | ID | "(" Expr ")"
+
+Type ::= "int" | "float" | "char" | "void" | "*" Type | "&" Type | Type ID "[" Expr "]"
+```
